@@ -1,0 +1,147 @@
+SET FOREIGN_KEY_CHECKS=0
+;
+
+DROP TABLE IF EXISTS yafra.YafraUserRole CASCADE
+;
+
+SET FOREIGN_KEY_CHECKS=1
+;
+
+SET FOREIGN_KEY_CHECKS=0
+;
+
+DROP TABLE IF EXISTS yafra.YafraRole CASCADE
+;
+
+SET FOREIGN_KEY_CHECKS=1
+;
+
+SET FOREIGN_KEY_CHECKS=0
+;
+
+DROP TABLE IF EXISTS yafra.PersonLog CASCADE
+;
+
+SET FOREIGN_KEY_CHECKS=1
+;
+
+SET FOREIGN_KEY_CHECKS=0
+;
+
+DROP TABLE IF EXISTS yafra.YafraAudit CASCADE
+;
+
+SET FOREIGN_KEY_CHECKS=1
+;
+
+SET FOREIGN_KEY_CHECKS=0
+;
+
+DROP TABLE IF EXISTS yafra.YafraBusinessRole CASCADE
+;
+
+SET FOREIGN_KEY_CHECKS=1
+;
+
+SET FOREIGN_KEY_CHECKS=0
+;
+
+DROP TABLE IF EXISTS yafra.Person CASCADE
+;
+
+SET FOREIGN_KEY_CHECKS=1
+;
+
+SET FOREIGN_KEY_CHECKS=0
+;
+
+DROP TABLE IF EXISTS yafra.YafraUserDevice CASCADE
+;
+
+SET FOREIGN_KEY_CHECKS=1
+;
+
+SET FOREIGN_KEY_CHECKS=0
+;
+
+DROP TABLE IF EXISTS yafra.YafraUser CASCADE
+;
+
+SET FOREIGN_KEY_CHECKS=1
+;
+
+CREATE TABLE yafra.YafraUser (email VARCHAR(200) NULL, name VARCHAR(1000) NOT NULL, phone VARCHAR(200) NULL, picturelink VARCHAR(4000) NULL, pkYafraUser INT NOT NULL, userid VARCHAR(500) NOT NULL, PRIMARY KEY (pkYafraUser)) ENGINE=InnoDB
+;
+
+CREATE TABLE yafra.YafraUserDevice (YUser INT NOT NULL, deviceAuthDate DATE NULL, deviceAuthToken VARCHAR(500) NULL, deviceId VARCHAR(300) NOT NULL, deviceOs VARCHAR(100) NULL, devicePushToken VARCHAR(500) NULL, deviceRegistrationDate DATE NULL, pkYafraUserDevice INT NOT NULL, PRIMARY KEY (pkYafraUserDevice), KEY (YUser)) ENGINE=InnoDB
+;
+
+CREATE TABLE yafra.Person (address VARCHAR(4000) NULL, country VARCHAR(1000) NULL, email VARCHAR(200) NULL, firstname VARCHAR(1000) NOT NULL, googleId VARCHAR(4000) NULL, id INT NOT NULL, name VARCHAR(1000) NOT NULL, pkPerson INT NOT NULL, type VARCHAR(100) NOT NULL, PRIMARY KEY (pkPerson)) ENGINE=InnoDB
+;
+
+CREATE TABLE yafra.YafraBusinessRole (description VARCHAR(4000) NULL, flag BOOL NULL, name VARCHAR(1000) NOT NULL, pkYafraBusinessRole INT NOT NULL, PRIMARY KEY (pkYafraBusinessRole)) ENGINE=InnoDB
+;
+
+CREATE TABLE yafra.YafraAudit (auditobject VARCHAR(1000) NULL, audittext VARCHAR(4000) NOT NULL, fkUser INT NOT NULL, pkAudit INT NOT NULL, timestamp DATE NOT NULL, PRIMARY KEY (pkAudit), KEY (fkUser)) ENGINE=InnoDB
+;
+
+CREATE TABLE yafra.PersonLog (eventAudit VARCHAR(4000) NULL, eventAuditReviewer VARCHAR(1000) NULL, eventCreator VARCHAR(1000) NOT NULL, eventDate DATE NOT NULL, eventDescription VARCHAR(4000) NOT NULL, fkPersonId INT NOT NULL, pkPersonLog INT NOT NULL, PRIMARY KEY (pkPersonLog), KEY (fkPersonId)) ENGINE=InnoDB
+;
+
+CREATE TABLE yafra.YafraRole (description VARCHAR(4000) NULL, fkBusinessRole INT NOT NULL, name VARCHAR(1000) NOT NULL, pkYafraRole INT NOT NULL, rights VARCHAR(1000) NULL, PRIMARY KEY (pkYafraRole), KEY (fkBusinessRole)) ENGINE=InnoDB
+;
+
+CREATE TABLE yafra.YafraUserRole (YRole INT NOT NULL, YUser INT NOT NULL, pkYafraUserRole INT NOT NULL, PRIMARY KEY (pkYafraUserRole), KEY (YRole), KEY (YUser)) ENGINE=InnoDB
+;
+
+ALTER TABLE yafra.YafraUserDevice ADD FOREIGN KEY (YUser) REFERENCES yafra.YafraUser (pkYafraUser)
+;
+
+ALTER TABLE yafra.YafraAudit ADD FOREIGN KEY (fkUser) REFERENCES yafra.YafraUser (pkYafraUser)
+;
+
+ALTER TABLE yafra.PersonLog ADD FOREIGN KEY (fkPersonId) REFERENCES yafra.Person (pkPerson)
+;
+
+ALTER TABLE yafra.YafraRole ADD FOREIGN KEY (fkBusinessRole) REFERENCES yafra.YafraBusinessRole (pkYafraBusinessRole)
+;
+
+ALTER TABLE yafra.YafraUserRole ADD FOREIGN KEY (YRole) REFERENCES yafra.YafraBusinessRole (pkYafraBusinessRole)
+;
+
+ALTER TABLE yafra.YafraUserRole ADD FOREIGN KEY (YUser) REFERENCES yafra.YafraUser (pkYafraUser)
+;
+
+DROP TABLE IF EXISTS AUTO_PK_SUPPORT
+;
+
+CREATE TABLE AUTO_PK_SUPPORT (  TABLE_NAME CHAR(100) NOT NULL,  NEXT_ID BIGINT NOT NULL, UNIQUE (TABLE_NAME))
+;
+
+DELETE FROM AUTO_PK_SUPPORT WHERE TABLE_NAME IN ('Person', 'PersonLog', 'YafraAudit', 'YafraBusinessRole', 'YafraRole', 'YafraUser', 'YafraUserDevice', 'YafraUserRole')
+;
+
+INSERT INTO AUTO_PK_SUPPORT (TABLE_NAME, NEXT_ID) VALUES ('Person', 200)
+;
+
+INSERT INTO AUTO_PK_SUPPORT (TABLE_NAME, NEXT_ID) VALUES ('PersonLog', 200)
+;
+
+INSERT INTO AUTO_PK_SUPPORT (TABLE_NAME, NEXT_ID) VALUES ('YafraAudit', 200)
+;
+
+INSERT INTO AUTO_PK_SUPPORT (TABLE_NAME, NEXT_ID) VALUES ('YafraBusinessRole', 200)
+;
+
+INSERT INTO AUTO_PK_SUPPORT (TABLE_NAME, NEXT_ID) VALUES ('YafraRole', 200)
+;
+
+INSERT INTO AUTO_PK_SUPPORT (TABLE_NAME, NEXT_ID) VALUES ('YafraUser', 200)
+;
+
+INSERT INTO AUTO_PK_SUPPORT (TABLE_NAME, NEXT_ID) VALUES ('YafraUserDevice', 200)
+;
+
+INSERT INTO AUTO_PK_SUPPORT (TABLE_NAME, NEXT_ID) VALUES ('YafraUserRole', 200)
+;
+
