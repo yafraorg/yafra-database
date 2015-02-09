@@ -15,6 +15,6 @@ schema generated out of Apache Cayenne modeler and a more complex travel databas
 ## Further information
 read more about yafra on:
  * http://www.yafra.org
- * https://github.com/yafraorg/yafra/wiki
+ * https://github.com/yafraorg/yafra/wiki/Db
  * raise a ticket related to yafra.org framework: https://github.com/yafraorg/yafra/issues?state=open
  * raise a ticket related to this java code: https://github.com/yafraorg/yafra-database/issues?state=open
