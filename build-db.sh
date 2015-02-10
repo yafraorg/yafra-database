@@ -16,134 +16,67 @@
 #-------------------------------------------------------------------------------------------
 # Author:        yafra
 #
-# Purpose:      build step 2: init database
-# Arguments: 1: dev/rel 2: mysql/oracle/derby/mssql 3: servername 4: sapwd
+# Purpose:      build database as part of Dockerfile
+# Arguments:    1: mysql/oracle/derby/mssql/mongodb
 #-------------------------------------------------------------------------------------------
 
 #
-# make sure the generic profile is loaded - run as user !!
+# make sure the generic profile is loaded
 #
-if [ ! -d $SYSADM/defaults ]
-then
-	echo "Environment not loaded - install first !"
-	exit
-fi
-if [ -z "$2" ]; then
-	echo "missing arguments 1 dev/rel 2 mysql/derby/mssql/oracle 3 host or setupdb 4 sa/dba pwd"
+WORKDIR=/work/repos/yafra-database
+if [ -z "$1" ]; then
+	echo "missing arguments 1 mysql/derby/mssql/oracle/mongodb"
 	exit
 fi
 
-#
-echo "apache cayenne config file"
-CAYCONFIG=src/main/resources/cayenne-org_yafra.xml
-echo "CAYCONFIG: $CAYCONFIG"
-#this is the development version - release versions are copied later
-CAYSRCCONFIG=src/main/resources/cayenne-org_yafra-localmysql.xml
-echo "CAYSRCCONFIG: $CAYSRCCONFIG - TODO make sure you changed this file according to your environment!"
-YAFRACORE=$BASENODE/org.yafra.server.core
-
-# database server
+# environment
 DBSERVER="localhost"
-if [ -n "$3" ]; then
-	if [ "$3" != "setupdb" ]; then
-		DBSERVER="$3"
-	fi
-fi
-
-# database root/dba password
-SAPWD="yafra"
-if [ -n "$4" ]; then
-	SAPWD="$4"
-fi
+YAFRAPWD="yafra"
+WORKDIR=/work/repos/yafra-database
+TDBDB=/work/repos/yafra-database/traveldb
 
 # print settings
-echo "create database in mode $1, dbtype $2, server $DBSERVER, dbapwd $SAPWD"
-
-#if [ ! -f $YAFRACORE/$CAYCONFIG ]; then
-#cp $YAFRACORE/$CAYSRCCONFIG $YAFRACORE/$CAYCONFIG
-#fi
-
-# create database YAFRA
-cd $JAVANODE/org.yafra.tests.serverdirectclient
-if [ "$1" = "dev" ]; then
-	if [ "$2" = "mysql" ]; then
-		echo "using the mysql $DBSERVER database"
-		#cp $YAFRACORE/src/main/resources/cayenne-org_yafra-localmysql.xml $YAFRACORE/$CAYCONFIG
-	fi
-	if [ "$2" = "derby" ]; then
-		echo "using the derby $DBSERVER database"
-		cp $YAFRACORE/src/main/resources/cayenne-org_yafra-localderby.xml $YAFRACORE/$CAYCONFIG
-	fi
-	if [ "$2" = "oracle" ]; then
-		echo "using the oracle $DBSERVER database"
-		cp $YAFRACORE/src/main/resources/cayenne-org_yafra-localoracle.xml $YAFRACORE/$CAYCONFIG
-	fi
-	if [ "$2" = "mssql" ]; then
-		echo "using the mssql $DBSERVER database"
-		cp $YAFRACORE/src/main/resources/cayenne-org_yafra-localmssql.xml $YAFRACORE/$CAYCONFIG
-	fi
-	if [ "$DBSERVER" != "localhost" ]; then
-		sed -i "s/localhost/$DBSERVER/g" $YAFRACORE/$CAYCONFIG
-	fi
-else
-	# copy a default config and later the correct one according $2
-	cp $YAFRACORE/$CAYSRCCONFIG $YAFRACORE/$CAYCONFIG
-	if [ "$2" = "mysql" ]; then
-		echo "using the mysql $DBSERVER database"
-		cp $YAFRACORE/src/main/resources/cayenne-org_yafra-localmysql.xml $YAFRACORE/$CAYCONFIG
-	fi
-	if [ "$2" = "derby" ]; then
-		echo "using the derby $DBSERVER database"
-		cp $YAFRACORE/src/main/resources/cayenne-org_yafra-localderby.xml $YAFRACORE/$CAYCONFIG
-	fi
-	if [ "$2" = "oracle" ]; then
-		echo "using the oracle $DBSERVER database"
-		cp $YAFRACORE/src/main/resources/cayenne-org_yafra-localoracle.xml $YAFRACORE/$CAYCONFIG
-	fi
-	if [ "$2" = "mssql" ]; then
-		echo "using the mssql $DBSERVER database"
-		cp $YAFRACORE/src/main/resources/cayenne-org_yafra-localmssql.xml $YAFRACORE/$CAYCONFIG
-	fi
+echo "create yafra database on $1"
+cd $WORKDIR/yafradb/
+if [ "$1" = "mysql" ]; then
+	echo "using the mysql database"
+	./generate.sh mysql
+fi
+if [ "$1" = "derby" ]; then
+	echo "using the derby database"
+	./generate.sh derby
+fi
+if [ "$1" = "oracle" ]; then
+	echo "using the oracle database"
+	./generate.sh oracle
+fi
+if [ "$1" = "mssql" ]; then
+	echo "using the mssql database"
+	./generate.sh mssql
 fi
 
-cd -
-
-
 # create database TDB and YafraDB as part of setupdb command
+cd $WORKDIR/traveldb
 # this works fine on unix with perl
-if [ "$3" = "setupdb" ]; then
-	cd $JAVANODE/org.yafra.utils
-	mvn install
-	cd $JAVANODE/org.yafra.server.core
-	mvn install
-	cd $SYSADM/databases/yafradb
-	./generate.sh $2 $SAPWD
-	if [ "$2" = "mysql" ]; then
+	if [ "$1" = "mysql" ]; then
 		echo "installing mysql database"
 		cd $TDBDB/mysql
 		$TDBDB/mysql/convert.sh
-		$TDBDB/mysql/generate.sh tdbadmin $SAPWD
-		cd $JAVANODE/org.yafra.tests.serverdirectclient
-		mvn install -P installmysql
+		$TDBDB/mysql/generate.sh tdbadmin
 	fi
-	if [ "$2" = "oracle" ]; then
+	if [ "$1" = "oracle" ]; then
 		echo "installing oracle database"
 		cd $TDBDB/oracle
 		$TDBDB/oracle/convert.sh
 		$TDBDB/oracle/generate.bat tdbadmin $SAPWD
-		cd $JAVANODE/org.yafra.tests.serverdirectclient
-		mvn install -P installora
 	fi
-	if [ "$2" = "mssql" ]; then
+	if [ "$1" = "mssql" ]; then
 		echo "installing mssql database"
 		cd $TDBDB/mssql
 		$TDBDB/mssql/convert.sh
 		$TDBDB/mssql/generate.bat $SAPWD yafra
-		cd $JAVANODE/org.yafra.tests.serverdirectclient
-		mvn install -P installmssql
 	fi
-	if [ "$2" = "derby" ]; then
-		echo "installing derby database"
-		mvn install -P installderby
+	if [ "$1" = "derby" ]; then
+		echo "derby travel db NOT support - only yafradb example"
 	fi
 fi

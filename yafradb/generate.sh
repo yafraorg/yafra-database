@@ -17,15 +17,15 @@
 # generate database yafradb
 #
 #
-# arguments are: 1: db type 2: dba_pwd 3: dba_username
+# arguments are: 1: db type
 if [ -z "$1" ]; then
-        echo "Please specify 1: db type 2: dba_pwd [3: dba_username 4: hostname]"
+        echo "Please specify 1: db type"
         exit
 fi
 
 DBANAME="root"
 # set the db administrator username
-if [ -z "$3" ]; then
+if [ -z "$2" ]; then
 	if [ "$1" = "oracle" ]; then
 		DBANAME="system"
 	fi
@@ -33,14 +33,14 @@ if [ -z "$3" ]; then
 		DBANAME="sa"
 	fi
 else
-	DBANAME="$3"
+	DBANAME="$2"
 fi
 
 # set the db hostname
-if [ -z "$4" ]; then
+if [ -z "$3" ]; then
 	DBHOST="127.0.0.1"
 else
-	DBHOST="$4"
+	DBHOST="$3"
 fi
 
 # 
@@ -50,7 +50,8 @@ echo Create a new "yafradb" database by your tools
 
 if [ "$1" = "mysql" ]; then
 	echo "installing mysql database - add --force if needed"
-	mysql --user=$DBANAME --password=$2 -v -v -h $DBHOST <dbe_init_mysql.sql
+	mysql -v -v <dbe_init_mysql.sql
+	mysql -v -v <dbe_generate_mysql.sql
 fi
 if [ "$1" = "oracle" ]; then
 	echo "installing oracle database"
