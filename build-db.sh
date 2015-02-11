@@ -79,4 +79,3 @@ cd $WORKDIR/traveldb
 	if [ "$1" = "derby" ]; then
 		echo "derby travel db NOT support - only yafradb example"
 	fi
-fi
