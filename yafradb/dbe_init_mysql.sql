@@ -12,6 +12,7 @@ commit;
 CREATE USER 'yafraadmin'@'localhost' IDENTIFIED BY  'yafra';
 CREATE USER 'yafraadmin'@'127.0.0.1' IDENTIFIED BY  'yafra';
 CREATE USER 'yafraadmin'@'192.168.%.%' IDENTIFIED BY  'yafra';
+CREATE USER 'yafraadmin'@'172.17.%.%' IDENTIFIED BY  'yafra';
 commit;
 
 /* create database now */

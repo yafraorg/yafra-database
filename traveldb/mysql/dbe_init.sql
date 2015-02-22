@@ -12,6 +12,7 @@ commit;
 CREATE USER 'tdbadmin'@'localhost' IDENTIFIED BY  'yafra';
 CREATE USER 'tdbadmin'@'127.0.0.1' IDENTIFIED BY  'yafra';
 CREATE USER 'tdbadmin'@'192.168.%.%' IDENTIFIED BY  'yafra';
+CREATE USER 'tdbadmin'@'172.17.%.%' IDENTIFIED BY  'yafra';
 commit;
 
 /* use the newly created database now */
