@@ -6,6 +6,8 @@ GRANT USAGE ON *.* TO 'tdbadmin'@'127.0.0.1';
 drop user 'tdbadmin'@'127.0.0.1';
 GRANT USAGE ON *.* TO 'tdbadmin'@'192.168.%.%';
 drop user 'tdbadmin'@'192.168.%.%';
+GRANT USAGE ON *.* TO 'tdbadmin'@'172.17.%.%';
+drop user 'tdbadmin'@'172.17.%.%';
 commit;
 
 /* create users */
@@ -25,4 +27,5 @@ commit;
 GRANT ALL PRIVILEGES ON tdbadmin. * TO  'tdbadmin'@'localhost';
 GRANT ALL PRIVILEGES ON tdbadmin. * TO  'tdbadmin'@'127.0.0.1';
 GRANT ALL PRIVILEGES ON tdbadmin. * TO  'tdbadmin'@'192.168.%.%';
+GRANT ALL PRIVILEGES ON tdbadmin. * TO  'tdbadmin'@'172.17.%.%';
 commit;
