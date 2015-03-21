@@ -6,6 +6,8 @@ GRANT USAGE ON *.* TO 'yafraadmin'@'127.0.0.1';
 drop user 'yafraadmin'@'127.0.0.1';
 GRANT USAGE ON *.* TO 'yafraadmin'@'192.168.%.%';
 drop user 'yafraadmin'@'192.168.%.%';
+GRANT USAGE ON *.* TO 'yafraadmin'@'172.17.%.%';
+drop user 'yafraadmin'@'172.17.%.%';
 commit;
 
 /* create users */
@@ -24,4 +26,5 @@ commit;
 GRANT ALL PRIVILEGES ON yafra. * TO  'yafraadmin'@'localhost';
 GRANT ALL PRIVILEGES ON yafra. * TO  'yafraadmin'@'127.0.0.1';
 GRANT ALL PRIVILEGES ON yafra. * TO  'yafraadmin'@'192.168.%.%';
+GRANT ALL PRIVILEGES ON yafra. * TO  'yafraadmin'@'172.17.%.%';
 commit;
