@@ -13,12 +13,10 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *
- * create users for monogo yapki db
+ * create users for monogo yafra db
  */
-
-
 db.createUser(
  {
     user: "yafraadmin",
     pwd: "yafra",
-    roles: [ { role: "userAdmin", db: "yapki" } ]   } )
+    roles: [ { role: "userAdmin", db: "yafra" } ]   } )
