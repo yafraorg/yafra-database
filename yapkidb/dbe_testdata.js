@@ -48,26 +48,5 @@ var testCerts =
         }
     ];
 
-db.person.insert( testPersons );
+db.yapki.insert( testCerts );
 
-var testPersonLogs =
-    [
-        {
-            eventAudit: "Creation",
-            eventAuditReviewer: "Admin",
-            eventCreator: "Admin",
-            eventDate: ISODate("2028-02-10T10:50:10Z"),
-            eventDescription: "Creation of entry",
-            person_id: 1
-        },
-        {
-            eventAudit: "Creation",
-            eventAuditReviewer: "Admin",
-            eventCreator: "Admin",
-            eventDate: ISODate("2028-02-10T10:50:10Z"),
-            eventDescription: "Creation of entry",
-            person_id: 2
-        }
-    ];
-
-db.personlog.insert( testPersonLogs );
