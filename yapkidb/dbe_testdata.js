@@ -48,5 +48,5 @@ var testCerts =
         }
     ];
 
-db.yapki.insert( testCerts );
+db.certs.insert( testCerts );
 
