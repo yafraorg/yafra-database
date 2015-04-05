@@ -30,3 +30,4 @@ fi
 #
 echo "setup mongo database - add user yafraadmin and default values"
 mongo $DBHOST/yapki dbe_users.js
+mongo $DBHOST/yapki dbe_testdata.js

@@ -32,7 +32,7 @@ TDBDB=/work/repos/yafra-database/traveldb
 
 # print settings
 echo "create yafra database on $1"
-cd $WORKDIR/yafradb/
+cd $WORKDIR/
 echo "creating yafra mongo database"
 cd yaframongo
 ./generate.sh
