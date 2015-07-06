@@ -50,8 +50,8 @@ echo Create a new "yafradb" database by your tools
 
 if [ "$1" = "mysql" ]; then
 	echo "installing mysql database - add --force if needed"
-	mysql -v -v <dbe_init_mysql.sql
-	mysql -v -v <dbe_generate_mysql.sql
+	mysql -v -v -p <dbe_init_mysql.sql
+	mysql -v -v -p <dbe_generate_mysql.sql
 fi
 if [ "$1" = "oracle" ]; then
 	echo "installing oracle database"

@@ -33,7 +33,7 @@ fi
 #
 echo Create a new "traveldb" database by your mysql tools
 echo "\n"
-mysql --force -v -v <dbe_init.sql >/tmp/mysql_tdb_setup$i.log
+mysql --force -v -v -p <dbe_init.sql >/tmp/mysql_tdb_setup$i.log
 
 #
 # execute scripts
