@@ -1,5 +1,8 @@
 /* drop any old database first */
 DROP DATABASE if exists tdbadmin;
+commit;
+
+/*
 GRANT USAGE ON *.* TO 'tdbadmin'@'localhost';
 drop user 'tdbadmin'@'localhost';
 GRANT USAGE ON *.* TO 'tdbadmin'@'127.0.0.1';
@@ -9,6 +12,7 @@ drop user 'tdbadmin'@'192.168.%.%';
 GRANT USAGE ON *.* TO 'tdbadmin'@'172.17.%.%';
 drop user 'tdbadmin'@'172.17.%.%';
 commit;
+*/
 
 /* create users */
 CREATE USER 'tdbadmin'@'localhost' IDENTIFIED BY  'yafra';
